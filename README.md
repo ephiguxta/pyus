@@ -2,6 +2,9 @@
 
 ### Como utilizar
 
+Na IDE do Arduino, utilize o atalho `Crtl + LShift + i` e procure pela biblioteca
+"MAX6675 library" da Adafruit e instale a mesma.
+
 Vá para o seu emulador de terminal ou cmd no Windows e crie um ambiente virtual:
 
 `python -m venv env`
