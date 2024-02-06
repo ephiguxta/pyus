@@ -5,6 +5,7 @@ import sys
 import time
 from time import strftime
 from sys import platform
+from re import search
 
 baudrate = '9600'
 
@@ -21,16 +22,25 @@ hits = 0
 ten_mins = 0
 
 while(True):
-    log = str(ser.readline())
+    log = ser.readline()
+    log = log.decode("utf-8")
+    match = search('^[0-9]{,2}.[0-9]{,2}', log)
+
+    # só salva os dados quando a saída do arduino
+    # for válida.
+    if match:
+        log = match.group(0)
+    else:
+        continue
 
     time = strftime("%H:%M:%S")
     hour = time[0:2]
     minute = time[3:5]
     second = time[6:]
 
-    text = time + " - " + log[2:7] + "\n"
+    text = time + " - " + log + "\n"
 
-    # a cada 1 minuto salva a temperatura
+    # a cada 10 minutos salva a temperatura
     if hits == 600:
 
         hits = 0
@@ -50,5 +60,5 @@ while(True):
             f.write(text)
             f.close()
 
-    print(text, end="")
+    print(f"{text}", end="")
     hits += 1
