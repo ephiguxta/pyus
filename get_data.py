@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import serial
 import sys
 import time
@@ -28,9 +30,8 @@ while(True):
 
     text = time + " - " + log[2:7] + "\n"
 
-    # salvando a temperatura a cada 10 minutos,
-    # há 600 segundos em 10min.
-    if hits == 600 and ten_mins != 6:
+    # a cada 1 minuto salva a temperatura
+    if hits == 600:
 
         hits = 0
         ten_mins += 1
@@ -39,18 +40,15 @@ while(True):
         f.write(text)
         f.close()
 
-    # 60 minutos == 1 hora
-    elif ten_mins == 6:
-        ten_mins = 0
+        # a cada 1 hora salva a temperatura
+        # em outro arquivo
+        if ten_mins == 6:
 
-        f = open("temp_1hour.txt", "a")
-        f.write(text)
-        f.close()
+            ten_mins = 0
 
-    else:
-        f = open("temp_secs.txt", "a")
-        f.write(text)
-        f.close()
+            f = open("temp_1hour.txt", "a")
+            f.write(text)
+            f.close()
 
     print(text, end="")
     hits += 1
